@@ -14,14 +14,11 @@ namespace auth2.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IRoleService _roleService;
-        public RolesController(RoleManager<IdentityRole> roleManager, IRoleService roleService)
+        public RolesController(IRoleService roleService)
         {
-            _roleManager = roleManager;
             _roleService = roleService;
         }
-        //[Authorize(Roles = "Admin")]
         [Authorize]
         [HttpGet("{userId?}")]
         public async Task<ActionResult<List<RoleDto>>> GetRoles(string userId = null)

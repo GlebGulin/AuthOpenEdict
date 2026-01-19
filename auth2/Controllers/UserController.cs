@@ -1,5 +1,7 @@
 ﻿using auth2.Data;
 using auth2.DTOs;
+using auth2.Services;
+using auth2.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,45 +15,25 @@ namespace auth2.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _userService = userService;
         }
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = await _userManager.Users
-                .Select(u => new { u.Id, u.UserName, u.Email }).ToListAsync();
-            return Ok(users);
+            return Ok(await _userService.GetUsers());
         }
-        [HttpPost("set-role")]
-        public async Task<IActionResult> SetRole([FromBody] SetRoleUserDto dto)
+        [HttpPost("attach-role")]
+        public async Task<IActionResult> AttachRole([FromBody] RoleUserDto dto)
         {
-            ApplicationUser? user = await _userManager.FindByIdAsync(dto.UserId);
-            if (user is null)
-                return NotFound($"User with id '{dto.UserId}' not found");
-
-            IdentityRole? role = await _roleManager.FindByIdAsync(dto.RoleId);
-            if (role is null)
-                return NotFound($"Role with id '{dto.RoleId}' not found");
-
-            if (await _userManager.IsInRoleAsync(user, role.Name!))
-                return BadRequest("User already has this role");
-
-            IdentityResult? result = await _userManager.AddToRoleAsync(user, role.Name!);
-
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            return Ok(new
-            {
-                message = "Role assigned",
-                userId = user.Id,
-                role = role.Name
-            });
+            return Ok(await _userService.AttachRole(dto));
+        }
+        [HttpPost("detach-role")]
+        public async Task<IActionResult> DetachRole([FromBody] RoleUserDto dto)
+        {
+            return Ok(await _userService.DetachRole(dto));
         }
     }
 }
