@@ -1,5 +1,6 @@
 ﻿using auth2.Data;
 using auth2.DTOs;
+using auth2.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -12,30 +13,17 @@ namespace auth2.Controllers
     [Route("api/account")]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IAccountService _accountManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(IAccountService accountManager)
         {
-            _userManager = userManager;
+            _accountManager = accountManager;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
         {
-            var user = new ApplicationUser
-            {
-                UserName =  model.Email,
-                Email = model.Email
-                //FullName = request.FullName
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-            await _userManager.AddToRoleAsync(user, "User");
-
-            return Ok("User registered");
+            return Ok(await _accountManager.Register(model));
         }
     }
 }
