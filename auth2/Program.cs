@@ -40,17 +40,10 @@ builder.Services.AddOpenIddict()
         serverOptions.AllowRefreshTokenFlow();
         serverOptions.AllowClientCredentialsFlow();
         serverOptions.SetTokenEndpointUris("/connect/token");
-
-        //serverOptions.RegisterScopes("api");
         serverOptions.RegisterScopes("api", "offline_access");
 
-        serverOptions.AcceptAnonymousClients(); // for debuging
+        serverOptions.AcceptAnonymousClients(); 
 
-        //serverOptions.AddDevelopmentSigningCertificate();
-        //serverOptions.AddDevelopmentEncryptionCertificate();
-
-        //serverOptions.UseAspNetCore()
-        //             .EnableTokenEndpointPassthrough();
         serverOptions.AddDevelopmentEncryptionCertificate()
                .AddDevelopmentSigningCertificate();
 

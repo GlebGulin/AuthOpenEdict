@@ -5,11 +5,12 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace auth2.Controllers
 {
-    [Authorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase
     {
+        [Authorize]
         [HttpGet("ping")]
         public IActionResult Ping()
         {

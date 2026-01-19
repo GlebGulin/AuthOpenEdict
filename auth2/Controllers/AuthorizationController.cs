@@ -1,5 +1,6 @@
 ﻿using auth2.Data;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -136,7 +137,26 @@ namespace auth2.Controllers
                     new ClaimsPrincipal(identity),
                     OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
+            if (request.IsRefreshTokenGrantType())
+            {
+                var result = await HttpContext.AuthenticateAsync(
+                    OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
 
+                var identity = new ClaimsIdentity(result.Principal.Claims,
+                    OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+
+                identity.SetScopes(request.GetScopes());
+                identity.SetResources("api");
+
+                identity.SetDestinations(claim => new[]
+                {
+                    Destinations.AccessToken
+                });
+
+                return SignIn(
+                    new ClaimsPrincipal(identity),
+                    OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
             throw new InvalidOperationException("Unsupported grant type.");
         }
 
