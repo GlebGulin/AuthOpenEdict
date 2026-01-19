@@ -38,24 +38,7 @@ namespace auth2.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult>DeleteRole([FromRoute] string id)
         {
-            var role = await _roleManager.FindByIdAsync(id);
-            if (role is null)
-                return NotFound($"Role with id '{id}' not found");
-
-            if (role.Name == "Admin")
-                return BadRequest("The 'Admin' role cannot be deleted");
-
-            IdentityResult? result = await _roleManager.DeleteAsync(role);
-
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            return Ok(new
-            {
-                message = "Role deleted",
-                roleId = role.Id,
-                roleName = role.Name
-            });
+            return Ok(await _roleService.DeleteRole(id));
         }
     }
 }

@@ -49,6 +49,26 @@ namespace auth2.Services
             };
         }
 
+        public async Task<ResultDeleteRoleDto> DeleteRole(string id)
+        {
+            IdentityRole? role = await _roleManager.FindByIdAsync(id);
+            if (role is null)
+                throw new AppNotFoundException($"Role with id '{id}' not found");
+            if (role.Name == "Admin")
+                throw new AppException("The 'Admin' role cannot be deleted", 400);
+            IdentityResult? result = await _roleManager.DeleteAsync(role);
+
+            if (!result.Succeeded)
+                throw new AppException(result.Errors.ToString(), 400);
+
+            return new ResultDeleteRoleDto
+            {
+                Message = "Role deleted",
+                Id = role.Id,
+                Name = role.Name
+            };
+        }
+
         public async Task<List<RoleDto>> GetRoles(string? userId = null)
         {
             if (string.IsNullOrEmpty(userId))

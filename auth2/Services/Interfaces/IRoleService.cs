@@ -1,5 +1,6 @@
 ﻿using auth2.DTOs;
 using auth2.DTOs.Roles;
+using Microsoft.AspNetCore.Mvc;
 
 namespace auth2.Services
 {
@@ -7,5 +8,6 @@ namespace auth2.Services
     {
         Task<List<RoleDto>> GetRoles(string userId = null);
         Task<CreatedRoleDto> CreateRole(CreateRoleDto dto);
+        Task<ResultDeleteRoleDto> DeleteRole(string id);
     }
 }
