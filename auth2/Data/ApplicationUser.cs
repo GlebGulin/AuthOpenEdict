@@ -5,5 +5,7 @@ namespace auth2.Data
     public class ApplicationUser : IdentityUser
     {
         public string? FullName { get; set; }
+        public ICollection<ApplicationUserSetting> Settings { get; set; }
+            = new List<ApplicationUserSetting>();
     }
 }

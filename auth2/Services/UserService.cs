@@ -6,6 +6,7 @@ using auth2.Middleware.Exceptions;
 using auth2.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Polly;
 
 namespace auth2.Services
 {
@@ -76,6 +77,11 @@ namespace auth2.Services
                 UserId = user.Id,
                 Role = role.Name
             };
+        }
+
+        public async Task<ApplicationUser> GetById(string id)
+        {
+            return await _userManager.FindByIdAsync(id);
         }
     }
 }
