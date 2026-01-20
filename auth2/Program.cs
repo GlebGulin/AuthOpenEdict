@@ -79,6 +79,7 @@ builder.Services.AddHostedService<RolesSeeder>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IUserSettingService, UserSettingService>();
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

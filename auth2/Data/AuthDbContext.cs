@@ -11,7 +11,7 @@ namespace auth2.Data
             : base(options)
         {
         }
-        public DbSet<ApplicationUserSetting> ApplicationUserSettings => Set<ApplicationUserSetting>();
+        public DbSet<ApplicationUserSetting> ApplicationUserSetting => Set<ApplicationUserSetting>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
