@@ -31,13 +31,20 @@ namespace auth2.Controllers
             if (ModelState.IsValid == false)
                 return BadRequest(ModelState);
 
-            ApplicationUserSetting setting = _userSettingService.Upsert(request.userId, request.name, request.value);
+            ApplicationUserSetting setting = _userSettingService.Upsert(request.userId, request.name, request.value, request.type);
             UpsertUserSettingResponseDto response = new UpsertUserSettingResponseDto()
             {
                 id = setting.Id,
             };
 
             return Ok(response);
+        }
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{id}")]
+        public IActionResult Delete([FromRoute] int id)
+        {
+            _userSettingService.Delete(id);
+            return Ok();
         }
     }
 }

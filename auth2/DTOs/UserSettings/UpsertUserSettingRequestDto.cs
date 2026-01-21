@@ -10,6 +10,8 @@ namespace auth2.DTOs.UserSettings
         public string name { get; set; }
         [Required]
         public string value { get; set; }
+        [Required]
+        public string type { get; set; }
 
     }
 }

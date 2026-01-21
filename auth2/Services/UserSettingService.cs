@@ -1,5 +1,7 @@
 ﻿using auth2.Data;
+using auth2.Middleware.Exceptions;
 using auth2.Services.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace auth2.Services
 {
@@ -10,11 +12,20 @@ namespace auth2.Services
         {
             _context = context;
         }
+
+        public void Delete(int Id)
+        {
+            ApplicationUserSetting setting = _context.ApplicationUserSetting.FirstOrDefault(s => s.Id == Id);
+            if (setting == null) throw new AppNotFoundException("Setting not found");
+            _context.Remove(setting);
+            _context.SaveChanges();
+        }
+
         public List<ApplicationUserSetting> Get(string userId)
         {
             return _context.ApplicationUserSetting.Where(us => us.UserId == userId).ToList();
         }
-        public ApplicationUserSetting Upsert(string userId, string name, string value)
+        public ApplicationUserSetting Upsert(string userId, string name, string value, string type)
         {
 
             ApplicationUserSetting setting = _context.ApplicationUserSetting.FirstOrDefault(s => s.UserId == userId && s.Name == name);
@@ -24,7 +35,8 @@ namespace auth2.Services
                 {
                     UserId = userId,
                     Name = name,
-                    Value = value
+                    Value = value,
+                    Type = type
                 };
                 _context.ApplicationUserSetting.Add(setting);
             }
