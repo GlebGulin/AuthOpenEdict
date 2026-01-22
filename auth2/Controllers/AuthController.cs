@@ -1,4 +1,6 @@
 ﻿using auth2.Data;
+using auth2.DTOs;
+using auth2.Services;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -14,84 +16,26 @@ namespace auth2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthorizationController : ControllerBase
+    public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IOpenIddictApplicationManager _applicationManager;
+        private readonly IAuthService _authService;
 
-        public AuthorizationController(
+        public AuthController(
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager, IOpenIddictApplicationManager applicationManager)
+        SignInManager<ApplicationUser> signInManager, IAuthService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _applicationManager = applicationManager;
+            _authService = authService;
         }
-        //[HttpPost("~/connect/token")]
-        //public async Task<IActionResult> Exchange()
-        //{
-        //    var request = HttpContext.GetOpenIddictServerRequest();
-
-        //    if (!request.IsClientCredentialsGrantType())
-        //        throw new InvalidOperationException();
-
-        //    var application = await _applicationManager.FindByClientIdAsync(request.ClientId)
-        //        ?? throw new InvalidOperationException();
-
-        //    var identity = new ClaimsIdentity(
-        //        TokenValidationParameters.DefaultAuthenticationType,
-        //        Claims.Name,
-        //        Claims.Role);
-
-        //    identity.SetClaim(Claims.Subject, request.ClientId);
-        //    identity.SetScopes("api");
-
-        //    identity.SetDestinations(claim => new[]
-        //    {
-        //        Destinations.AccessToken
-        //    });
-
-        //    return SignIn(
-        //        new ClaimsPrincipal(identity),
-        //        OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-        //}
-        //[HttpPost("~/connect/token")]
-        //public async Task<IActionResult> Exchange()
-        //{
-        //    var request = HttpContext.GetOpenIddictServerRequest();
-
-        //    if (request.IsPasswordGrantType())
-        //    {
-        //        var user = await _userManager.FindByNameAsync(request.Username);
-
-        //        if (user == null)
-        //            return Forbid();
-
-        //        var result = await _signInManager.CheckPasswordSignInAsync(
-        //            user, request.Password, false);
-
-        //        if (!result.Succeeded)
-        //            return Forbid();
-
-        //        var identity = new ClaimsIdentity(
-        //            OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-
-        //        identity.SetClaim(Claims.Subject, user.FullName);
-        //        identity.SetClaim(Claims.Email, user.Email);
-        //        identity.SetScopes(request.GetScopes());
-        //        identity.SetResources("api");
-
-        //        identity.SetDestinations(c => new[] { Destinations.AccessToken });
-
-        //        return SignIn(
-        //            new ClaimsPrincipal(identity),
-        //            OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-        //    }
-
-        //    throw new InvalidOperationException();
-        //}
-        [HttpPost("~/connect/token")]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
+        {
+            return Ok(await _authService.Register(model));
+        }
+        [HttpPost("login")]
         public async Task<IActionResult> Exchange()
         {
             var request = HttpContext.GetOpenIddictServerRequest()

@@ -1,8 +1,7 @@
 ﻿using auth2.Data;
 using auth2.DTOs.UserSettings;
-using auth2.Services.Interfaces;
+using auth2.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace auth2.Controllers

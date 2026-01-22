@@ -1,7 +1,6 @@
 using auth2.Data;
 using auth2.Middleware;
 using auth2.Services;
-using auth2.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Validation.AspNetCore;
@@ -39,7 +38,8 @@ builder.Services.AddOpenIddict()
         serverOptions.AllowPasswordFlow();
         serverOptions.AllowRefreshTokenFlow();
         serverOptions.AllowClientCredentialsFlow();
-        serverOptions.SetTokenEndpointUris("/connect/token");
+        //serverOptions.SetTokenEndpointUris("/connect/token");
+        serverOptions.SetTokenEndpointUris("/api/auth/login");
         serverOptions.RegisterScopes("api", "offline_access");
 
         serverOptions.AcceptAnonymousClients(); 
@@ -78,7 +78,7 @@ builder.Services.AddHostedService<RolesSeeder>();
 // Services
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IUserSettingService, UserSettingService>();
 var app = builder.Build();
 if (app.Environment.IsDevelopment())

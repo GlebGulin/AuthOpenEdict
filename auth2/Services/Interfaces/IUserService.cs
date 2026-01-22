@@ -2,7 +2,7 @@
 using auth2.DTOs;
 using auth2.DTOs.Users;
 
-namespace auth2.Services.Interfaces
+namespace auth2.Services
 {
     public interface IUserService
     {

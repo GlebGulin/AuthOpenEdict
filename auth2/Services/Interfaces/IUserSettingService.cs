@@ -1,6 +1,6 @@
 ﻿using auth2.Data;
 
-namespace auth2.Services.Interfaces
+namespace auth2.Services
 {
     public interface IUserSettingService
     {

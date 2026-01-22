@@ -1,6 +1,5 @@
 ﻿using auth2.Data;
 using auth2.Middleware.Exceptions;
-using auth2.Services.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace auth2.Services

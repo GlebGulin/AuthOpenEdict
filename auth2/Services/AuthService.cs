@@ -2,16 +2,15 @@
 using auth2.DTOs;
 using auth2.DTOs.Account;
 using auth2.Middleware;
-using auth2.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace auth2.Services
 {
-    public class AccountService : IAccountService
+    public class AuthService : IAuthService
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountService(UserManager<ApplicationUser> userManager)
+        public AuthService(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }

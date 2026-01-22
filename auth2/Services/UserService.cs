@@ -3,7 +3,6 @@ using auth2.DTOs;
 using auth2.DTOs.Users;
 using auth2.Middleware;
 using auth2.Middleware.Exceptions;
-using auth2.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Polly;
