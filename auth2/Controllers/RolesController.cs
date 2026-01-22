@@ -20,10 +20,10 @@ namespace auth2.Controllers
             _roleService = roleService;
         }
         [Authorize]
-        [HttpGet("{userId?}")]
-        public async Task<ActionResult<List<RoleDto>>> GetRoles(string userId = null)
+        [HttpGet("")]
+        public async Task<ActionResult<List<RoleDto>>> GetRoles()
         {
-            return Ok(await _roleService.GetRoles(userId));
+            return Ok(await _roleService.GetRoles());
         }
         [Authorize(Roles = "Admin")]
         [HttpPost]

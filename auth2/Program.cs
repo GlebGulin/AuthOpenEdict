@@ -80,6 +80,7 @@ builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IUserSettingService, UserSettingService>();
+builder.Services.AddTransient<IUserRolesService, UserRolesService>();
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

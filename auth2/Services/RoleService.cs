@@ -69,26 +69,9 @@ namespace auth2.Services
             };
         }
 
-        public async Task<List<RoleDto>> GetRoles(string? userId = null)
+        public async Task<List<RoleDto>> GetRoles()
         {
-            if (string.IsNullOrEmpty(userId))
-            {
-                return await _roleManager.Roles
-                    .Select(r => new RoleDto
-                    {
-                        Id = r.Id,
-                        Name = r.Name
-                    })
-                    .ToListAsync();
-            }
-            ApplicationUser? user = await _userManager.FindByIdAsync(userId);
-            if (user is null)
-                throw new Exception($"User with id '{userId}' not found");
-
-            IList<string>? userRoles = await _userManager.GetRolesAsync(user);
-
             return await _roleManager.Roles
-                .Where(r => userRoles.Contains(r.Name!))
                 .Select(r => new RoleDto
                 {
                     Id = r.Id,

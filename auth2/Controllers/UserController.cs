@@ -25,17 +25,10 @@ namespace auth2.Controllers
         {
             return Ok(await _userService.GetById(userId));
         }
-
-        [HttpPost("attach-role")]
-        public async Task<IActionResult> AttachRole([FromBody] RoleUserDto dto)
+        [HttpDelete("{userId}")]
+        public async Task<IActionResult> Delete([FromRoute] string userId)
         {
-            return Ok(await _userService.AttachRole(dto));
-        }
-        [Authorize(Roles = "Admin")]
-        [HttpPost("detach-role")]
-        public async Task<IActionResult> DetachRole([FromBody] RoleUserDto dto)
-        {
-            return Ok(await _userService.DetachRole(dto));
+            return Ok(await _userService.Delete(userId));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace auth2.Services
 {
     public interface IRoleService
     {
-        Task<List<RoleDto>> GetRoles(string userId = null);
+        Task<List<RoleDto>> GetRoles();
         Task<CreatedRoleDto> CreateRole(CreateRoleDto dto);
         Task<ResultDeleteRoleDto> DeleteRole(string id);
     }

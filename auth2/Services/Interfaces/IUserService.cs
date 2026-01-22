@@ -7,8 +7,8 @@ namespace auth2.Services
     public interface IUserService
     {
         Task<List<ApplicationUser>> GetUsers();
-        Task<ResultRoleUserDto> AttachRole(RoleUserDto dto);
-        Task<ResultRoleUserDto> DetachRole(RoleUserDto dto);
+        
         Task<ApplicationUser> GetById(string id);
+        Task<ApplicationUser> Delete(string id);
     }
 }
